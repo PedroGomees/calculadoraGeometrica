@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Áreas</title>
   <style>
-    /* Estilos gerais */
+    
     body {
       display: flex;
       justify-content: center;
@@ -84,6 +84,73 @@
     display: block;
   margin: 0 auto;margin-top: 20px;}
     }
+    /* CSS para tornar o site responsivo */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .container {
+    width: 90vw;
+    height: auto;
+    box-shadow: none;
+    padding: 20px;
+  }
+
+  .shape {
+    width: 80px;
+    height: 80px;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .input-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  input {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  #formula {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  #result {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shape {
+    width: 60px;
+    height: 60px;
+  }
+
+  button {
+    padding: 6px;
+    font-size: 12px;
+  }
+
+  #formula, #result {
+    font-size: 14px;
+  }
+
+  input {
+    padding: 6px;
+    font-size: 12px;
+  }
+}
+
   </style>
 </head>
 <body>
