@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Áreas</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #fff4b3;
+    }
+    .container {
+      text-align: center;
+      width: 50vw;
+      box-shadow: #474747 3px 5px 10px;
+      height: 50vh;
+      background-color: #2c2c2c;
+      transition: transform 0.3s;
+    }
+
+    .container:hover {
+      transform: scale(1.1);
+    }
+
+    .shape {
+      width: 100px;
+      height: 100px;
+      margin: 20px auto;
+      background-color: #fdfd96;
+      transition: transform 0.5s, border-radius 0.5s;
+    }
+
+    p {
+      color: white;
+      font-weight: 400;
+    }
+
+    .circle { border-radius: 50%; }
+    .square { border-radius: 0; }
+    .rectangle { width: 150px; height: 80px; }
+    .trapezoid {
+      width: 150px;
+      height: 80px;
+      background-color: #fdfd96;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    }
+
+    button {
+      padding: 10px;
+      margin: 5px;
+      color: white;
+      font-weight: 400;
+      border: #474747 solid 3px;
+      background-color: #2c2c2c;
+      transition: background-color 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #fdfd96;
+      color: #2c2c2c;
+      transform: scale(1.2);
+      font-weight: 300;
+      border: none;
+    }
+
+    .input-group {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .show {
+      display: flex;
+    }
+
+    .hidden {
+      display: none;
+      #calcButton{
+    display: block;
+  margin: 0 auto;margin-top: 20px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="shape" id="shape"></div>
+    <button onclick="selectShape('circle')">Círculo</button>
+    <button onclick="selectShape('square')">Quadrado</button>
+    <button onclick="selectShape('rectangle')">Retângulo</button>
+    <button onclick="selectShape('triangle')">Triângulo</button>
+    <button onclick="selectShape('trapezoid')">Trapézio</button>
+    <button onclick="selectShape('rhombus')">Losango</button>
+
+    <div id="inputs" class="input-group">
+      <p id="formula"></p>
+      <input type="number" id="input1" placeholder="Digite o valor">
+      <input type="number" id="input2" placeholder="Digite o valor" style="display: none;">
+      <button onclick="calculateArea()">Calcular Área</button>
+      <p id="result"></p>
+      
+      <!-- Seletor de cores -->
+      <input type="color" id="colorPicker" value="#fdfd96">
+      <button onclick="changeColor()">Mudar Cor</button>
+    </div>
+  </div>
+
+  <script>
+    const shapeDiv = document.getElementById('shape');
+    const inputsDiv = document.getElementById('inputs');
+    const formulaText = document.getElementById('formula');
+    const input1 = document.getElementById('input1');
+    const input2 = document.getElementById('input2');
+    const resultText = document.getElementById('result');
+
+    let selectedShape = '';
+
+    function selectShape(shape) {
+      selectedShape = shape;
+
+      shapeDiv.className = 'shape';
+      inputsDiv.style.display = 'block';
+      input1.style.display = 'inline';
+      input2.style.display = 'none';
+      resultText.textContent = '';
+
+      switch (shape) {
+        case 'circle':
+          shapeDiv.classList.add('circle');
+          formulaText.textContent = 'Fórmula: π * r²';
+          input1.placeholder = 'Digite o raio';
+          break;
+        case 'square':
+          shapeDiv.classList.add('square');
+          formulaText.textContent = 'Fórmula: lado²';
+          input1.placeholder = 'Digite o lado';
+          break;
+        case 'rectangle':
+          shapeDiv.classList.add('rectangle');
+          formulaText.textContent = 'Fórmula: largura * altura';
+          input1.placeholder = 'Digite a largura';
+          input2.style.display = 'inline';
+          input2.placeholder = 'Digite a altura';
+          break;
+        case 'triangle':
+          formulaText.textContent = 'Fórmula: (base * altura) / 2';
+          input1.placeholder = 'Digite a base';
+          input2.style.display = 'inline';
+          input2.placeholder = 'Digite a altura';
+          break;
+        case 'trapezoid':
+          shapeDiv.classList.add('trapezoid');
+          formulaText.textContent = 'Fórmula: ((base maior + base menor) * altura) / 2';
+          input1.placeholder = 'Digite a base maior';
+          input2.style.display = 'inline';
+          input2.placeholder = 'Digite a altura';
+          break;
+        case 'rhombus':
+          shapeDiv.classList.add('square');
+          formulaText.textContent = 'Fórmula: (diagonal maior * diagonal menor) / 2';
+          input1.placeholder = 'Digite a diagonal maior';
+          input2.style.display = 'inline';
+          input2.placeholder = 'Digite a diagonal menor';
+          break;
+        default:
+          break;
+      }
+    }
+
+    function calculateArea() {
+      const val1 = parseFloat(input1.value);
+      const val2 = parseFloat(input2.value);
+      let area = 0;
+
+      if (isNaN(val1) || (input2.style.display === 'inline' && isNaN(val2))) {
+        resultText.textContent = 'Por favor, insira valores válidos.';
+        return;
+      }
+
+      switch (selectedShape) {
+        case 'circle':
+          area = Math.PI * val1 * val1;
+          break;
+        case 'square':
+          area = val1 * val1;
+          break;
+        case 'rectangle':
+          area = val1 * val2;
+          break;
+        case 'triangle':
+          area = (val1 * val2) / 2;
+          break;
+        case 'trapezoid':
+          area = ((val1 + val2) * val1) / 2;
+          break;
+        case 'rhombus':
+          area = (val1 * val2) / 2;
+          break;
+        default:
+          break;
+      }
+      resultText.textContent = `Área: ${area.toFixed(2)}`;
+    }
+
+    function changeColor() {
+      const body = document.body;
+      const colorPicker = document.getElementById('colorPicker');
+      const selectedColor = colorPicker.value;
+      shapeDiv.style.backgroundColor = selectedColor;
+      body.style.backgroundColor = selectedColor;
+    }
+  </script>
+</body>
+</html>
